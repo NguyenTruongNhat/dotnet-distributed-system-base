@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInterceptorPersistence();
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlServerPersistence();
+builder.Services.AddRepositoryPersistence();
 
 var app = builder.Build();
 

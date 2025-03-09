@@ -1,6 +1,9 @@
-﻿using DistributedSystem.Domain.Entities.Identity;
+﻿using DistributedSystem.Domain.Abstractions;
+using DistributedSystem.Domain.Abstractions.Repositories;
+using DistributedSystem.Domain.Entities.Identity;
 using DistributedSystem.Persistence.DependencyInjection.Options;
 using DistributedSystem.Persistence.Interceptors;
+using DistributedSystem.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -97,4 +100,14 @@ public static class ServiceCollectionExtensions
             .Bind(section)
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+    public static void AddRepositoryPersistence(this IServiceCollection services)
+    {
+        services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
+        services.AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
+
+        services.AddTransient(typeof(IUnitOfWorkDbContext<>), typeof(EFUnitOfWorkDbContext<>));
+        services.AddTransient(typeof(IRepositoryBaseDbContext<,,>), typeof(RepositoryBaseDbContext<,,>));
+
+    }
 }
