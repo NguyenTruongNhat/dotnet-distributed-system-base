@@ -1,9 +1,18 @@
+using Command.Persistence.DependencyInjection.Extensions;
+using Command.Persistence.DependencyInjection.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// Configure Options and SQL => Remember mapcarter
+builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
+builder.Services.AddSqlServerPersistence();
+
 
 var app = builder.Build();
 

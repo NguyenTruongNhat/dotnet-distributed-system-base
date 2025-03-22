@@ -13,4 +13,10 @@
     <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Contract\DistributedSystem.Contract\DistributedSystem.Contract.csproj" />
+    <ProjectReference Include="..\Command.Domain\Command.Domain.csproj" />
+    <ProjectReference Include="..\Command.Persistence\Command.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
