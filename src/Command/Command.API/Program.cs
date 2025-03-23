@@ -1,5 +1,7 @@
 using Carter;
 using Command.API.DependencyInjection.Extensions;
+using Command.API.Middleware;
+using Command.Application.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Options;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -37,10 +39,8 @@ builder.Services
         options.SubstituteApiVersionInUrl = true;
     });
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddMediatRApplication();
 
 
 // Configure Options and SQL => Remember mapcarter
@@ -48,9 +48,13 @@ builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration
 builder.Services.AddSqlServerPersistence();
 builder.Services.AddRepositoryPersistence();
 
+// Add Middleware => Remember using middleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 var app = builder.Build();
 
+// Using middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 //app.UseHttpsRedirection(); // => Use in production environment
 

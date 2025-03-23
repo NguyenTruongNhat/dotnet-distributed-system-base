@@ -14,7 +14,7 @@ public class Product : AggregateRoot<Guid>, IAuditableEntity
 
     public static Product CreateProduct(Guid id, string name, decimal price, string description)
     {
-        if (name.Length > 50)
+        if (name.Length > 4)
             throw new ProductFieldException(nameof(Name));
 
         var product = new Product(id, name, price, description);
