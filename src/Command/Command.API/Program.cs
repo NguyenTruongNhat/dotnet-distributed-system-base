@@ -7,6 +7,18 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add configuration
+
+Log.Logger = new LoggerConfiguration().ReadFrom
+    .Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Logging
+    .ClearProviders()
+    .AddSerilog();
+
+builder.Host.UseSerilog();
+
 // Add Carter module
 builder.Services.AddCarter();
 
