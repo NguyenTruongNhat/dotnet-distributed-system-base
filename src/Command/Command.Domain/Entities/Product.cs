@@ -19,10 +19,10 @@ public class Product : AggregateRoot<Guid>, IAuditableEntity
 
         var product = new Product(id, name, price, description);
 
-        //product.RaiseDomainEvent(new Contract.Services.V1.Product.DomainEvent.ProductCreated(Guid.NewGuid(), product.Id,
-        //    product.Name, product.Price,
-        //    product.Description
-        //    ));
+        product.RaiseDomainEvent(new DistributedSystem.Contract.Services.V1.Product.DomainEvent.ProductCreated(Guid.NewGuid(), product.Id,
+            product.Name, product.Price,
+            product.Description
+            ));
 
         return product;
     }
@@ -47,6 +47,6 @@ public class Product : AggregateRoot<Guid>, IAuditableEntity
         //RaiseDomainEvent(new Contract.Services.V1.Product.DomainEvent.ProductUpdated(Guid.NewGuid(), Id, name, price, description));
     }
 
-    //public void Delete()
-    //    => RaiseDomainEvent(new Contract.Services.V1.Product.DomainEvent.ProductDeleted(Guid.NewGuid(), Id));
+    public void Delete()
+        => RaiseDomainEvent(new DistributedSystem.Contract.Services.V1.Product.DomainEvent.ProductDeleted(Guid.NewGuid(), Id));
 }

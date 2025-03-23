@@ -2,7 +2,9 @@
 using Command.Domain.Abstractions.Repositories;
 using Command.Domain.Entities.Identity;
 using Command.Persistence.DependencyInjection.Options;
+using Command.Persistence.Interceptors;
 using Command.Persistence.Repositories;
+using DistributedSystem.Persistence.Interceptors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +20,8 @@ public static class ServiceCollectionExtensions
         services.AddDbContextPool<DbContext, ApplicationDbContext>((provider, builder) =>
         {
             // Interceptor
-            //var outboxInterceptor = provider.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
-            //var auditableInterceptor = provider.GetService<UpdateAuditableEntitiesInterceptor>();
+            var outboxInterceptor = provider.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
+            var auditableInterceptor = provider.GetService<UpdateAuditableEntitiesInterceptor>();
 
             var configuration = provider.GetRequiredService<IConfiguration>();
             var options = provider.GetRequiredService<IOptionsMonitor<SqlServerRetryOptions>>();
@@ -40,8 +42,8 @@ public static class ServiceCollectionExtensions
                                     maxRetryDelay: options.CurrentValue.MaxRetryDelay,
                                     errorNumbersToAdd: options.CurrentValue.ErrorNumbersToAdd))
                             .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name))
-            //.AddInterceptors(outboxInterceptor,
-            //        auditableInterceptor)
+            .AddInterceptors(outboxInterceptor,
+                    auditableInterceptor)
             ;
 
             #endregion ============== SQL-SERVER-STRATEGY-1 ==============
@@ -103,5 +105,11 @@ public static class ServiceCollectionExtensions
         services.AddTransient(typeof(IUnitOfWorkDbContext<>), typeof(EFUnitOfWorkDbContext<>));
         services.AddTransient(typeof(IRepositoryBaseDbContext<,,>), typeof(RepositoryBaseDbContext<,,>));
 
+    }
+
+    public static void AddInterceptorPersistence(this IServiceCollection services)
+    {
+        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
     }
 }

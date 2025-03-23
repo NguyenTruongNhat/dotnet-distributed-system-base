@@ -18,7 +18,7 @@ public sealed class DeleteProductCommandHandler : ICommandHandler<CommandV1.Dele
     public async Task<Result> Handle(CommandV1.DeleteProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.FindByIdAsync(request.Id) ?? throw new ProductException.ProductNotFoundException(request.Id);
-        //product.Delete();
+        product.Delete();
         _productRepository.Remove(product);
 
         return Result.Success();

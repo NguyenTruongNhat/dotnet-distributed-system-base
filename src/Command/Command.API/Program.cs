@@ -4,6 +4,7 @@ using Command.API.Middleware;
 using Command.Application.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Options;
+using DistributedSystem.Infrastructure.DependencyInjection.Extensions;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 
@@ -42,8 +43,12 @@ builder.Services
 
 builder.Services.AddMediatRApplication();
 
+// Configure masstransit rabbitmq
+builder.Services.AddQuartzInfrastructure();
+
 
 // Configure Options and SQL => Remember mapcarter
+builder.Services.AddInterceptorPersistence();
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlServerPersistence();
 builder.Services.AddRepositoryPersistence();
