@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 // Configure Options and SQL => Remember mapcarter
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlServerPersistence();
+builder.Services.AddRepositoryPersistence();
 
 
 var app = builder.Build();
