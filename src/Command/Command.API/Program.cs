@@ -1,11 +1,21 @@
 using Carter;
+using Command.API.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Options;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Carter module
 builder.Services.AddCarter();
+
+// Add Swagger
+builder.Services
+        .AddSwaggerGenNewtonsoftSupport()
+        .AddFluentValidationRulesToSwagger()
+        .AddEndpointsApiExplorer()
+        .AddSwaggerAPI();
 
 builder.Services
     .AddApiVersioning(options => options.ReportApiVersions = true)
@@ -29,24 +39,28 @@ builder.Services.AddRepositoryPersistence();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+//app.UseHttpsRedirection(); // => Use in production environment
 
 // Add API Endpoint with carter module
 app.MapCarter();
 
+// Configure the HTTP request pipeline. 
+if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+    app.UseSwaggerAPI(); // => After MapCarter => Show Version
 
-
-app.UseHttpsRedirection();
-
-
-app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+try
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    await app.RunAsync();
+    Log.Information("Stopped cleanly");
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "An unhandled exception occured during bootstrapping");
+    await app.StopAsync();
+}
+finally
+{
+    Log.CloseAndFlush();
+    await app.DisposeAsync();
 }
