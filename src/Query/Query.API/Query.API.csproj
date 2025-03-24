@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageReference Include="Carter" Version="8.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.12" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Contract\DistributedSystem.Contract\DistributedSystem.Contract.csproj" />
+    <ProjectReference Include="..\Query.Application\Query.Application.csproj" />
+    <ProjectReference Include="..\Query.Domain\Query.Domain.csproj" />
+    <ProjectReference Include="..\Query.Infrastructure\Query.Infrastructure.csproj" />
+    <ProjectReference Include="..\Query.Persistence\Query.Persistence.csproj" />
+    <ProjectReference Include="..\Query.Presentation\Query.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>
