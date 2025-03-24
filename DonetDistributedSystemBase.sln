@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Query.Persistence", "src\Qu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Query.Presentation", "src\Query\Query.Presentation\Query.Presentation.csproj", "{40344BAF-70D8-4682-ACF2-88B35AC83917}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "src\ReverseProxy\ApiGateway\ApiGateway.csproj", "{D0AFA98D-23D4-40CC-928D-1B5EB3FA1956}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,10 @@ Global
 		{40344BAF-70D8-4682-ACF2-88B35AC83917}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40344BAF-70D8-4682-ACF2-88B35AC83917}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40344BAF-70D8-4682-ACF2-88B35AC83917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0AFA98D-23D4-40CC-928D-1B5EB3FA1956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0AFA98D-23D4-40CC-928D-1B5EB3FA1956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0AFA98D-23D4-40CC-928D-1B5EB3FA1956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0AFA98D-23D4-40CC-928D-1B5EB3FA1956}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,5 +135,6 @@ Global
 		{5B471E93-E2C9-4CE4-BCD7-F11BAD7AF381} = {F657963D-14A2-45FF-A059-D34A6EC15736}
 		{D3AB817D-1CB8-4B5D-B21F-1DF9EDA05292} = {F657963D-14A2-45FF-A059-D34A6EC15736}
 		{40344BAF-70D8-4682-ACF2-88B35AC83917} = {F657963D-14A2-45FF-A059-D34A6EC15736}
+		{D0AFA98D-23D4-40CC-928D-1B5EB3FA1956} = {1A4895E4-14BC-499C-98F6-7AEB09433E1B}
 	EndGlobalSection
 EndGlobal
