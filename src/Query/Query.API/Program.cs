@@ -1,6 +1,11 @@
 using Carter;
 using Query.API.DependencyInjection.Extensions;
+using Query.API.Middleware;
+using Query.Application.DependencyInjection.Extensions;
+using Query.Infrastructure.DependencyInjection.Extensions;
+using Query.Persistence.DependencyInjection.Extensions;
 using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +38,19 @@ builder.Services
         options.SubstituteApiVersionInUrl = true;
     });
 
+builder.Services.AddMediatRApplication();
+
+builder.Services.ConfigureServicesInfrastructure(builder.Configuration);
+
+builder.Services.AddServicesPersistence();
+
+// Add Middleware => Remember using middleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
 var app = builder.Build();
 
+// Using middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Add API Endpoint with carter module
 app.MapCarter();
