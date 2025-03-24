@@ -2,9 +2,9 @@ using Carter;
 using Command.API.DependencyInjection.Extensions;
 using Command.API.Middleware;
 using Command.Application.DependencyInjection.Extensions;
+using Command.Infrastructure.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Extensions;
 using Command.Persistence.DependencyInjection.Options;
-using DistributedSystem.Infrastructure.DependencyInjection.Extensions;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 
@@ -44,6 +44,7 @@ builder.Services
 builder.Services.AddMediatRApplication();
 
 // Configure masstransit rabbitmq
+builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
 builder.Services.AddQuartzInfrastructure();
 
 

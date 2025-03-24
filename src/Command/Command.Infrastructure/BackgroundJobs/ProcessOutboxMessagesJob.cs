@@ -2,6 +2,7 @@
 using Command.Persistence.Outbox;
 using DistributedSystem.Contract.Abstractions.Message;
 using DistributedSystem.Contract.Services.V1.Product;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Quartz;
@@ -12,19 +13,16 @@ namespace Command.Infrastructure.BackgroundJobs;
 public class ProcessOutboxMessagesJob : IJob
 {
     private readonly ApplicationDbContext _dbContext;
-    //private readonly IPublishEndpoint _publishEndpoint; // Maybe can use more Rebus library
+    private readonly IPublishEndpoint _publishEndpoint; // Maybe can use more Rebus library
 
-    public ProcessOutboxMessagesJob(ApplicationDbContext dbContext
-        //, IPublishEndpoint publishEndpoint
-        )
+    public ProcessOutboxMessagesJob(ApplicationDbContext dbContext, IPublishEndpoint publishEndpoint)
     {
         _dbContext = dbContext;
-        //_publishEndpoint = publishEndpoint;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-        Console.WriteLine("====>  Execute OutboxMessage");
         List<OutboxMessage> messages = await _dbContext
             .Set<OutboxMessage>()
             .Where(m => m.ProcessedOnUtc == null)
@@ -56,7 +54,7 @@ public class ProcessOutboxMessagesJob : IJob
                                     {
                                         TypeNameHandling = TypeNameHandling.All
                                     });
-                        //await _publishEndpoint.Publish(productCreated, context.CancellationToken);
+                        await _publishEndpoint.Publish(productCreated, context.CancellationToken);
                         break;
 
                     case nameof(DomainEvent.ProductUpdated):
@@ -66,7 +64,7 @@ public class ProcessOutboxMessagesJob : IJob
                                     {
                                         TypeNameHandling = TypeNameHandling.All
                                     });
-                        //await _publishEndpoint.Publish(productUpdated, context.CancellationToken);
+                        await _publishEndpoint.Publish(productUpdated, context.CancellationToken);
                         break;
 
                     case nameof(DomainEvent.ProductDeleted):
@@ -76,7 +74,7 @@ public class ProcessOutboxMessagesJob : IJob
                                     {
                                         TypeNameHandling = TypeNameHandling.All
                                     });
-                        //await _publishEndpoint.Publish(productDeleted, context.CancellationToken);
+                        await _publishEndpoint.Publish(productDeleted, context.CancellationToken);
                         break;
                     default:
                         break;
