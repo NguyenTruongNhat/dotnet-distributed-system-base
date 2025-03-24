@@ -6,7 +6,6 @@ using Query.Infrastructure.DependencyInjection.Extensions;
 using Query.Persistence.DependencyInjection.Extensions;
 using Serilog;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add configuration
@@ -41,6 +40,7 @@ builder.Services
 builder.Services.AddMediatRApplication();
 
 builder.Services.ConfigureServicesInfrastructure(builder.Configuration);
+builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
 
 builder.Services.AddServicesPersistence();
 
